@@ -9,5 +9,5 @@ Before that, we need to understand the distribution of the wealth within the who
 
 ## Hypothesis
 1. Individuals in the whole society would not obtain material wealth at the same level, which means a portion of people have more wealth than the rest. 
-2. This difference between the wealthy and the poor would be greater.
+2. The difference of wealth between the wealthy own and the poor own would be greater.
 3. (...)
