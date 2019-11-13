@@ -1,5 +1,5 @@
 # IS590_PR_FinalProject_MCS
-**Discover the distribution of social wealth with the use of Monte Carlo Simulation Method**   
+**Discover the distribution of social wealth with the use of Monte Carlo Simulations Method**   
 By Xiaohan Wang
 
 ## Project Background
