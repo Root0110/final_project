@@ -10,10 +10,11 @@ Many researchers are devoted to design a set of rules to maintain relative justi
 The policy or law related to personal income played a main role in the change of personal wealth. 
 
 ## Hypothesis
-I About social wealth distribution 
+I About social wealth distribution    
 1. Individuals in the whole society would not obtain material wealth at the same level, which means a portion of people have more wealth than the rest. To be specific, 80% of the social wealth may be owned by the top 20% people.
-2. As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater and greater.
+2. As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater and greater.    
 
-II About relevant policy or law
+II About relevant policy or law     
+
 3. If the income tax rate changes to flat tax, 80% of the social wealth may not be owned by the top 20% people.
 
