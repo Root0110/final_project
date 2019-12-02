@@ -69,7 +69,7 @@ def simulation(people,fortune_df,round_no):
     '''
     round_i = pd.DataFrame({'pre_round_wealth':fortune_df[round_no - 1],'income_stable':stable_income_sample(len(people)),
                             'income_tax':0})
-    round_i = pd.merge(round_i, random_unstable_income(people,1/100), how='left', left_index=True, right_index=True)
+    round_i = pd.merge(round_i, random_unstable_income(people,1/100,5), how='left', left_index=True, right_index=True)
     round_i.fillna(0,inplace=True)
     # personal income tax rate
     round_i['income_tax'] = round_i['income_stable'].apply(lambda x: 0.1 * x if x <= 9700 else (
@@ -112,12 +112,10 @@ result1 = fortune.T
 
 
 """
-os.chdir('/Users/W/PycharmProjects/final_project/pic1')
-
+os.chdir('/Users/W/PycharmProjects/final_project')
 
 def graph1(fortune_i,start,end,length):
     '''
-
     :param fortune:
     :param start:
     :param end:
