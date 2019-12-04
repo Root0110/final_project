@@ -33,9 +33,9 @@ sns.distplot(income_points)
 
 
 def initial_wealth(people):
-    '''
-    :param people:
-    :return:
+    ''' Initialize personal fortune values that are consistent with facutal datasets
+    :param people: a list of numbers representing persons in this simulation
+    :return: year_0_wealth: the dataframe of initial wealth values for each person
     '''
     year_0_wealth = pd.DataFrame({'ID':people,'pre_year_wealth':[0]*(len(people)),'income_stable':stable_income_sample(len(people)),
                                   'income_tax':0,'income_unstable':0,'social_welfare':0,'accidental_loss':0})
@@ -46,7 +46,7 @@ def initial_wealth(people):
 def stable_income_sample(size):
     ''' Combine 3 distributions in piecewise fashion to generate random sample with income values
     :param size: number of people
-    :return: a ndarray of personal income values
+    :return: sample: a ndarray of personal income values
     '''
     sample_left = np.zeros(math.ceil(0.286 * size)).astype('Int32')
     sample_middle = np.random.triangular(0, 1250, 100000, math.ceil(0.643 * size)).astype('Int32')
@@ -58,8 +58,8 @@ def stable_income_sample(size):
 
 def income_update(pre_income):
     ''' Update each person's income value based on that in last year
-    :param :
-    :return: : an updated column
+    :param pre_income: a series of stable income values in lat year
+    :return: pre_income: an updated column of stable income values
     '''
     people_id_list = range(1,1001)
     id_choice = list(np.random.choice(people_id_list,math.ceil(0.5 * len(people_id_list))))
@@ -72,30 +72,22 @@ def income_update(pre_income):
 
 
 def random_values(sample,percent,amount,name):
-    ''' Given a group of people, the chance of winning a certain amount of unstable income,
-    get a column of unstable income for each person.
-    :param people: a list of ID numbers which represents a group of people
-    :param chance: the chance of earning unstable income
-    :param amount: the amount of unstable income
-    :return: unstable_df: a dataframe that contains unstable income values for each person
+    ''' Given a group of people as sample, the percent of winning/losing a certain amount of money, get a column of values
+     with a certain column name.
+    :param sample: a list of ID numbers which represents a group of people
+    :param percent: the chance of earning or losing money
+    :param amount: the amount of gains or losses
+    :return: df: the dataframe that contains money values for each person
     '''
     id_choice = list(np.random.choice(sample,math.ceil(percent * len(sample))))
     df = pd.DataFrame({'ID':id_choice,'{}'.format(name):[amount] * len(id_choice)})
-
-    '''
-    part1 = pd.DataFrame({'ID':id_choice,'amount':[amount] * len(id_choice)})
-    rest_people = list(set(sample) - set(id_choice))
-    part2 = pd.DataFrame({'ID':rest_people,'amount':[0] * len(rest_people),})
-    df = pd.concat([part1,part2],ignore_index=True)
-    df.sort_values(by=['ID'],inplace=True)
-    '''
     return df
 
 
 def simulation(fortune_df,year_i,pre_year_income):
     ''' Simulate the gain and loss of personal wealth in
-    :param fortune_df: the dataframe that contains initial personal wealth value of the whole people
-    :param year_i:
+    :param fortune_df: the dataframe that contains personal net wealth values during previous years
+    :param year_i: present year to be simulated and calculated
     :return: fortune_i: a column of new fortune value after one round of simulation
     '''
     people = fortune_df['ID']
@@ -111,7 +103,6 @@ def simulation(fortune_df,year_i,pre_year_income):
                                     x - 204100) if x <= 510300 else
                         0.1 * 9700 + 0.12 * 30045 + 0.22 * 42655 + 0.24 * 78325 + 0.32 * 43375 + 0.35 * 306200 + 0.37 * (
                                     x - 510300)))))))
-    #year_i_wealth['income_tax'].astype('Int32')
 
     # unstable income like gains from lottery
     # assume the probability of winning $5 is 1/100
@@ -129,21 +120,21 @@ def simulation(fortune_df,year_i,pre_year_income):
     year_i_wealth = year_i_wealth.merge(temp_df2,how='outer',on='ID')
     year_i_wealth.fillna(0, inplace=True)
     year_i_wealth['accidental_loss'].astype('Int32')
-    '''id_choice2 = np.random.choice(people, math.ceil((1 / 50) * len(people)))
-    temp1 = pd.DataFrame({'accidental_loss': [500] * len(id_choice2)}, index=id_choice2)
-    year_i_wealth = pd.merge(year_i_wealth, temp1, how='left', left_index=True, right_index=True)
-    year_i_wealth.fillna(0,inplace=True)'''
 
     return year_i_wealth
 
 
 
 def fortune_new(year_i_wealth):
+    ''' Given the wealth dataframe of one year, calculate the net wealth value for each person during this year
+    :param year_i_wealth: a dataframe contains several columns that are different aspects of personal wealth
+    :return: fortune_i: a series of personal net fortune during this year
+    '''
     # a column of fortune value after one year passed
     fortune_i = year_i_wealth['pre_year_wealth'] + year_i_wealth['income_stable'] + year_i_wealth[
         'income_unstable'] - year_i_wealth['income_tax'] + year_i_wealth['social_welfare'] - year_i_wealth[
                                      'accidental_loss']
-    #fortune_i.astype('Int64')
+    # fortune_i.astype('Int64')
     return fortune_i
 
 
