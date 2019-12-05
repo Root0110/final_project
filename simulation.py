@@ -12,8 +12,10 @@ import os
 import time
 import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy import stats
 import math
+import warnings
+warnings.filterwarnings('ignore')
+# import modin.pandas as pd
 
 '''
 # set rules to change personal wealth amount
@@ -50,7 +52,7 @@ def stable_income_sample(size):
     '''
     sample_left = np.zeros(math.ceil(0.286 * size)).astype('Int32')
     sample_middle = np.random.triangular(0, 1250, 100000, math.ceil(0.643 * size)).astype('Int32')
-    sample_right = np.random.choice([100000, 10000000000], math.floor(0.071 * size)).astype('Int32')
+    sample_right = np.random.choice([100000, 10000000], math.floor(0.071 * size)).astype('Int32')
     sample = np.concatenate([sample_left,sample_middle,sample_right],axis=0)
     np.random.shuffle(sample)
     return sample
@@ -124,7 +126,6 @@ def simulation(fortune_df,year_i,pre_year_income):
     return year_i_wealth
 
 
-
 def fortune_new(year_i_wealth):
     ''' Given the wealth dataframe of one year, calculate the net wealth value for each person during this year
     :param year_i_wealth: a dataframe contains several columns that are different aspects of personal wealth
@@ -138,22 +139,52 @@ def fortune_new(year_i_wealth):
     return fortune_i
 
 
+def graph1(fortune_t,start,end,length):
+    ''' Plot fortune values for each person each year
+    :param fortune: the dataframe contains all year's net fortune values
+    :param start: start year of plotting
+    :param end: end year of plotting
+    :param length: interval between the year every two graphs present
+    :return:
+    '''
+    for n in list(range(start,end,length)):
+        # filter by rows
+        # new_index = range(1,len(fortune_t.iloc[n+1])+1)
+        year_fortune = fortune_t.iloc[n+1].sort_values() # fortune values of all the people during nth year
+        year_fortune.reset_index(drop=True,inplace=True)
+        plt.figure(figsize=(10,6))
+        plt.bar(year_fortune.index,year_fortune.values,color='gray',width=1)
+        plt.xlim([0,1001])
+        plt.ylim([0,10000000])
+        #plt.axis([0, 1001, 0, 100000000])
+        plt.title('year {}'.format(n))
+        plt.xlabel('PlayerID')
+        plt.ylabel('Personal wealth in {}th year'.format(n))
+        plt.grid(color='gray',linestyle='--',linewidth=0.5)
+        plt.savefig('graph1_year_{}'.format(n),dpi=200)
+        print('Success in plotting round {}'.format(n))
+
+
 if __name__ == '__main__':
     # set initial values of personal wealth with uniform distribution
     # assume there's almost no difference among people in one country at first
     person_n = [x for x in range(1, 1001)]
     fortune = pd.DataFrame({'ID':person_n,'year_0':[0 for i in range(1000)]})
 
+    start_time = time.time()
+
     pre_year_income = initial_wealth(person_n)['income_stable']
     year_i_wealth = simulation(fortune,1,pre_year_income)
     # fortune = fortune.merge(fortune_new(),how='outer',on='ID')
     fortune['year_1'] = fortune_new(year_i_wealth)
-    for year in range(2,60):
+    for year in range(2,61):
         pre_year_income = year_i_wealth['income_stable']
         year_i_wealth = simulation(fortune,year,pre_year_income)
         fortune['year_{}'.format(year)] = fortune_new(year_i_wealth)
-    print(year_i_wealth)
+    print(max(fortune['year_10']),min(fortune['year_10']))
+    end_time = time.time()
 
-result1 = fortune.T
+    result1 = fortune.T
+    graph1(result1,0,61,1)
 
 
