@@ -52,7 +52,7 @@ def stable_income_sample(size):
     '''
     sample_left = np.zeros(math.ceil(0.286 * size)).astype('Int32')
     sample_middle = np.random.triangular(0, 1250, 100000, math.ceil(0.643 * size)).astype('Int32')
-    sample_right = np.random.choice([100000, 10000000], math.floor(0.071 * size)).astype('Int32')
+    sample_right = np.random.choice([100000, 1000000], math.floor(0.071 * size)).astype('Int32')
     sample = np.concatenate([sample_left,sample_middle,sample_right],axis=0)
     np.random.shuffle(sample)
     return sample
@@ -86,25 +86,28 @@ def random_values(sample,percent,amount,name):
     return df
 
 
-def simulation(fortune_df,year_i,pre_year_income):
-    ''' Simulate the gain and loss of personal wealth in
+def simulation(fortune_df,year_i,pre_year_income,flat):
+    ''' Simulate the gain and loss of personal wealth
     :param fortune_df: the dataframe that contains personal net wealth values during previous years
-    :param year_i: present year to be simulated and calculated
+    :param year_i: an integer that indicates the number of simulation rounds
+    :param pre_year_income: present year to be simulated and calculated
+    :param flat: a bool value, true means the income tax is flat (same for all income values)
     :return: fortune_i: a column of new fortune value after one round of simulation
     '''
     people = fortune_df['ID']
     year_i_wealth = pd.DataFrame({'ID':people,'pre_year_wealth':fortune_df['year_{}'.format(year_i-1)],
                                   'income_stable':income_update(pre_year_income)})
-    # calculate the amount of tax to pay based on stable income
-    year_i_wealth['income_tax'] = year_i_wealth['income_stable'].apply(lambda x: 0.1 * x if x <= 9700 else (
-        0.1 * 9700 + 0.12 * (x - 9700) if x <= 39475 else (
-            0.1 * 9700 + 0.12 * 30045 + 0.22 * (x - 39745) if x <= 84200 else (
-                0.1 * 9700 + 0.12 * 30045 + 0.22 * 42655 + 0.24 * (x - 82400) if x <= 160725 else (
-                    0.1 * 9700 + 0.12 * 30045 + 0.22 * 42655 + 0.24 * 78325 + 0.32 * (x - 160725) if x <= 204100 else (
-                        0.1 * 9700 + 0.12 * 30045 + 0.22 * 42655 + 0.24 * 78325 + 0.32 * 43375 + 0.35 * (
-                                    x - 204100) if x <= 510300 else
-                        0.1 * 9700 + 0.12 * 30045 + 0.22 * 42655 + 0.24 * 78325 + 0.32 * 43375 + 0.35 * 306200 + 0.37 * (
-                                    x - 510300)))))))
+    # stable income tax
+    if not flat:
+        year_i_wealth['income_tax'] = year_i_wealth['income_stable'].apply(lambda x: 0.1 * x if x <= 9700 else (
+            0.1 * 9700 + 0.15 * (x - 9700) if x <= 39475 else (
+                0.1 * 9700 + 0.15 * 30045 + 0.25 * (x - 39745) if x <= 84200 else (
+                    0.1 * 9700 + 0.15 * 30045 + 0.25 * 42655 + 0.3 * (x - 82400) if x <= 160725 else (
+                        0.1 * 9700 + 0.15 * 30045 + 0.25 * 42655 + 0.3 * 78325 + 0.35 * (x - 160725) if x <= 204100 else (
+                            0.1 * 9700 + 0.15 * 30045 + 0.25 * 42655 + 0.3 * 78325 + 0.35 * 43375 + 0.4 * (x - 204100) if x <= 510300 else
+                                0.1 * 9700 + 0.15 * 30045 + 0.25 * 42655 + 0.3 * 78325 + 0.35 * 43375 + 0.4 * 306200 + 0.5 * (x - 510300)))))))
+    else:
+        year_i_wealth['income_tax'] = year_i_wealth['income_stable'].apply(lambda x: x * 0.35)
 
     # unstable income like gains from lottery
     # assume the probability of winning $5 is 1/100
@@ -174,17 +177,17 @@ if __name__ == '__main__':
     start_time = time.time()
 
     pre_year_income = initial_wealth(person_n)['income_stable']
-    year_i_wealth = simulation(fortune,1,pre_year_income)
+    year_i_wealth = simulation(fortune,1,pre_year_income,False)
     # fortune = fortune.merge(fortune_new(),how='outer',on='ID')
     fortune['year_1'] = fortune_new(year_i_wealth)
     for year in range(2,61):
         pre_year_income = year_i_wealth['income_stable']
-        year_i_wealth = simulation(fortune,year,pre_year_income)
+        year_i_wealth = simulation(fortune,year,pre_year_income,False)
         fortune['year_{}'.format(year)] = fortune_new(year_i_wealth)
     print(max(fortune['year_10']),min(fortune['year_10']))
     end_time = time.time()
 
     result1 = fortune.T
-    graph1(result1,0,61,1)
+    #graph1(result1,0,61,1)
 
 
