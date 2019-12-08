@@ -1,48 +1,68 @@
 # IS590_PR_FinalProject_MCS
 **Discover the distribution and evolution of social wealth (under different situations) with the use of Monte Carlo Simulations Method**   
+
 By Xiaohan Wang   
-2019 Fall
+December 2019
 
 ## Project Background
-Wealth inequality in the United States is high and has increased sharply in recent decades.
-The Monte Carlo simulation involves running many scenarios with different random inputs and summarizing the distribution of the results from potential result. This distribution can inform the likelihood that the result will be within a certain window. 
+Wealth inequality is a severe problem worldwide, and in the United States it has increased sharply in recent decades. 
+It's of great necessity for researchers to design a set of rules to maintain relative justice in the society, since it matters a lot to all of us. 
+Before that, we need to understand the distribution of wealth within the whole society, to see how it would be assigned to each individual.
+There's a popular rule called Pareto Principle(also known as 80/20 rule), which can be applied on many fields and events. 
+In economics, it means the richest __20%__ of world's population control more than __80%__ of the world's income.
 
-Many researchers are devoted to design a set of rules to maintain relative justice in the society, which matters a lot to all of us. Before that, we need to understand the distribution of the wealth within the whole society, to see how it would be assigned to each individual. And since the amount of money one person earns and donates are two random variables, so I would apply Monte Carlo Simulation method to dive deeply into the distribution of money one person owns. Furthermore, I would love to test whether some strategies about dealing with the social wealth id reasonable or not. 
-
-The policy or law related to personal income played a main role in the change of personal wealth. 
+Based on that, I think it would be interesting to conduct more accurate and detailed analysis on the distribution of wealth problem, like adding more influential factors, etc.
+Since the amount of money one person gains and loses are random variables, so I consider Monte Carlo Simulation a great method. 
+The __Monte Carlo simulation__ involves running many scenarios with different random inputs and summarizing the distribution of the results from potential result.
+This distribution can inform the likelihood that the result will be within a certain window.
 
 ## Hypothesis
+
+The policy or law related to personal income played a main role in the change of personal wealth.  
+
 About social wealth distribution    
-* Individuals in the whole society would not obtain material wealth at the same level, which means a portion of people have more wealth than the rest. To be specific, 80% of the social wealth may be owned by the top 20% people.
+* Individuals in the whole society would not obtain material wealth at the same level, which means a portion of people have more wealth than the rest. 
+To be specific, 80% of the social wealth may be owned by the top 20% people.
 * As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater and greater.    
 
 About relevant policy or law     
 * If the income tax rate changes to flat tax, 80% of the social wealth may not be owned by the top 20% people.
 
-## Project Design  
-There are 5 factors that have primary influence in the amount of personal wealth.
+## Project Design 
+Firstly, the distribution of personal income values is plotted, according to datasets from the Current Population Survey(CPS) by US Census Bureau. 
+* __"Status Quo" (Initial amount of wealth)__  
+    Based on 
+It's realistic that some of the social members are born with some assets, like the any kinds of heritage form their ancestors. S
+ince not everyone has uniform amount of assets, so I initialize personal wealth value with random numbers. The __distribution/proportion__ is consistent with xxxxx research/report.
 
-1.__"Status Quo" (Intial amount of wealth)__     
-It's realistic that some of the social members are born with some assets, like the any kinds of heritage form their ancestors. Since not everyone has uniform amount of assets, so I initialize personal wealth value with random numbers. The __distribution/proportion__ is consistent with xxxxx research/report.
+Personal wealth(net worth), is defined as gains minus losses. Secondly, generate random values for each variable based on certain predefined rules.
+Every round of simulation represents the change of personal wealth during one year.
+And suppose people start work at 20 years old, and would retire after 45 years. So, the final result would be achieved after 45 rounds of simulations. 
+Then, conduct fundamental analysis of accumulative personal wealth amounts.
+* __Gains__
+    1. Stable Income:  
+       Individual's total earnings from wages, investment interest, and other sources. It's the main part in a person's assets
+    2. Unstable Income:  
+       Like gains from stock or lottery, this kind of events occurs at a certain chance.
+    3. Social Welfare:  
+       In modern society, the government feels responsible for providing some welfare for __every__ social member. 
+       It can be medical insurance, pension fee, and other kinds of life guarantee. 
+       This is a kind of stable addition to personal wealth, and it's not distinguishing between the poor and the rich.       
+* __Losses__
+    1. Income Tax:
+       It's an efficient way for the government to get citizens paying all kinds of tax to be involved in the construction of country. 
+       Here I mainly focus on personal income tax rate. 
+       And to be more representative of the real situation, I adopt piecewise income tax rate as follows.
+    2. Accidental Loss:
+       Like illness, natural disasters, suffering from wars, and so on. This value would be randomly assigned to a certain percentage of people.
 
-2.__Personal Income__    
-Income is the main part in our assets, including stable income like salary from hard work, and unstable income like gains or loss from stock or lottery.  
-Personal income is an individual's total earnings from wages, investment interest, and other sources. 
-
-3.__Tax__   
-It's an efficient way for the government to get citizens paying all kinds of tax to be involved in the construction of country. Here I focus on income tax rate. And to simplify the real situation, I made assumption that people with top 50% income should pay x% tax, and it's necessary for the rest.
-
-4.__Social Welfare__   
-In modern society, the government feels responsible for providing some welfare for __every__ social member. It can be medical insurance, pension fee, and other kinds of life guarantee. This is a kind of stable addition to personal wealth, and it's not distinguishing between the poor and the rich.
-
-5.__Other Possible Accidents__  
-illness or?? bankrupt
+I made some changes on above factors, to run models representing countries under different situations.
+1. __Situation A__: With flat personal income rate, people with different income need to pay the same amount of tax.
+2. __Situation B__: People are suffering more accidental losses, because of natural disasters, escalating wars, etc.   
+3. __Situation C__: There're some people who work harder than others, which means, their income would be increased 10% more than others.
 
 
-Based on the above five factor, I build ? models representing countries under different situations(parameters).
-* __Country A__   
-* __Country B__   
-* __Country C__   
-
-
-Maybe there're some connections/interations among them.
+#### Reference & Data Source
+https://en.wikipedia.org/wiki/Pareto_principle#In_economics
+https://pbpython.com/monte-carlo.html
+https://www.mikulskibartosz.name/monte-carlo-simulation-in-python/
