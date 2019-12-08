@@ -17,16 +17,11 @@ The __Monte Carlo simulation__ involves running many scenarios with different ra
 This distribution can inform the likelihood that the result will be within a certain window.
 
 ## Hypothesis
-
-The policy or law related to personal income played a main role in the change of personal wealth.  
-
-About social wealth distribution    
-* Individuals in the whole society would not obtain material wealth at the same level, which means a portion of people have more wealth than the rest. 
-To be specific, 80% of the social wealth may be owned by the top 20% people.
+    
+* A small portion of people would obtain the most of wealth within the whole society, just as Pareto Principle states. 
 * As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater and greater.    
-
-About relevant policy or law     
-* If the income tax rate changes to flat tax, 80% of the social wealth may not be owned by the top 20% people.
+* If the income tax rate changes to flat tax, the difference between top 20% wealthy people's wealth and the rest 80% would be greater.
+* People who work harder, even a little, they would have more wealth amounts as long as they persist year by year.
 
 ## Project Design 
 Firstly, the distribution of personal income values is plotted, according to datasets from the Current Population Survey(CPS) by US Census Bureau. 
@@ -35,9 +30,10 @@ Firstly, the distribution of personal income values is plotted, according to dat
 It's realistic that some of the social members are born with some assets, like the any kinds of heritage form their ancestors. S
 ince not everyone has uniform amount of assets, so I initialize personal wealth value with random numbers. The __distribution/proportion__ is consistent with xxxxx research/report.
 
-Personal wealth(net worth), is defined as gains minus losses. Secondly, generate random values for each variable based on certain predefined rules.
+Secondly, generate random values for each variable based on certain predefined rules.
 Every round of simulation represents the change of personal wealth during one year.
-And suppose people start work at 20 years old, and would retire after 45 years. So, the final result would be achieved after 45 rounds of simulations. 
+And suppose people start work at 20 years old, and would retire after 45 years. So, the final result would be achieved after 45 rounds of simulations.
+Personal wealth(net worth), is defined as gains minus losses, as the followings.
 Then, conduct fundamental analysis of accumulative personal wealth amounts.
 * __Gains__
     1. Stable Income:  
@@ -56,7 +52,7 @@ Then, conduct fundamental analysis of accumulative personal wealth amounts.
     2. Accidental Loss:
        Like illness, natural disasters, suffering from wars, and so on. This value would be randomly assigned to a certain percentage of people.
 
-I made some changes on above factors, to run models representing countries under different situations.
+Then, I made some changes on above factors, to run models representing countries under different situations.
 1. __Situation A__: With flat personal income rate, people with different income need to pay the same amount of tax.
 2. __Situation B__: People are suffering more accidental losses, because of natural disasters, escalating wars, etc.   
 3. __Situation C__: There're some people who work harder than others, which means, their income would be increased 10% more than others.
