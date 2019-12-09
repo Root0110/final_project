@@ -213,10 +213,3 @@ if __name__ == '__main__':
     ranking1['Increased_by'] = ranking1['Fortune']/ranking1['Initial_fortune'] - 1
     ranking1['Increased_by'] = ranking1['Increased_by'].apply(lambda x: format(x, '.2%'))
 
-
-
-
-
-
-
-
