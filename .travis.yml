@@ -4,5 +4,4 @@ sudo: required
 python:
     - '3.6'
     - '3.7'
-script:
-    - python simulation.py test
+script: true
