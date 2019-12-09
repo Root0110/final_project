@@ -30,21 +30,14 @@ Generate random values for each variable based on certain predefined rules.
 And suppose people start work at __20__ years old, and would retire at __65__ years old. So, the final result would be achieved after __45__ rounds of simulations(45 years).
 Personal wealth(net worth), is defined as gains minus losses, as the followings.
     * __Gains__
-    1. Stable Income:  
-       Individual's total earnings from wages, investment interest, and other sources. It's the main part in a person's assets
-    2. Unstable Income:  
-       Like gains from stock or lottery, this kind of events occurs at a certain chance.
-    3. Social Welfare:  
-       In modern society, the government feels responsible for providing some welfare for __every__ social member. 
-       It can be medical insurance, pension fee, and other kinds of life guarantee. 
-       This is a kind of stable addition to personal wealth, and it's not distinguishing between the poor and the rich.       
+    1. `Stable Income`:Individual's total earnings from wages, investment interest, and other sources. It's the main part in a person's assets.
+    2. `Unstable Income`:Like gains from stock or lottery, this kind of events occurs at a certain chance.
+    3. `Social Welfare`:In modern society, the government feels responsible for providing some welfare for __every__ social member.It can be medical insurance, pension fee, and other kinds of life guarantee.This is a kind of stable addition to personal wealth, and it's not distinguishing between the poor and the rich.       
     * __Losses__
-    1. Income Tax:
-       It's an efficient way for the government to get citizens paying all kinds of tax to be involved in the construction of country. 
+    1. `Income Tax`:It's an efficient way for the government to get citizens paying all kinds of tax to be involved in the construction of country. 
        Here I mainly focus on personal income tax rate. 
        And to be more representative of the real situation, I adopt piecewise income tax rate as follows.
-    2. Accidental Loss:
-       Like illness, natural disasters, suffering from wars, and so on. This value would be randomly assigned to a certain percentage of people.
+    2. `Accidental Loss`:Like illness, natural disasters, suffering from wars, and so on. This value would be randomly assigned to a certain percentage of people.
 3. __Experiment__  
 I made some changes on some of above factors, to run models representing different situations.  
 
