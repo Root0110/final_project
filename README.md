@@ -14,7 +14,11 @@ Since the amount of money one person gains and loses are random variables, so I 
 `Monte Carlo simulation` involves running many scenarios with different random inputs and summarizing the distribution of the results from potential result.
 
 ## Hypothesis
-
+* A small portion of people would have the most of wealth within the whole society, just as Pareto Principle states. 
+* As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater and greater.    
+* If the piecewise income tax rate changes to flat tax, the difference would be greater.
+* Living in situations that would cause much more accidental loss, but with more chance for unstable income, the difference would be greater. 
+* People who work harder, even achieved a little more than others, they would have more wealth amounts as long as they persist year by year.
 
 ## Project Design 
 1. __"Status Quo"__  
@@ -55,8 +59,9 @@ I made some changes on some of above factors, to run models representing differe
 
 
 ### Reference & Data Source
->https://www.census.gov/cps/data/cpstablecreator.html
->https://en.wikipedia.org/wiki/Pareto_principle#In_economics
->https://pbpython.com/monte-carlo.html
->https://www.mikulskibartosz.name/monte-carlo-simulation-in-python/
->https://equitablegrowth.org/the-distribution-of-wealth-in-the-united-states-and-implications-for-a-net-worth-tax/
+>https://www.census.gov/cps/data/cpstablecreator.html  
+>https://en.wikipedia.org/wiki/Pareto_principle#In_economics  
+>https://en.wikipedia.org/wiki/Personal_income_in_the_United_States#Income_distribution    
+>https://pbpython.com/monte-carlo.html  
+>https://www.mikulskibartosz.name/monte-carlo-simulation-in-python/  
+>https://equitablegrowth.org/the-distribution-of-wealth-in-the-united-states-and-implications-for-a-net-worth-tax/  
