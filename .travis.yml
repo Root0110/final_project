@@ -1,11 +1,12 @@
 # Travis CI configuration
 language: python
-script: true
-
-"""matrix:
-  include:
-    - python: 3.6
-    - python: 3.7
-
-# command to run tests
-#script: pytest --doctest-modules"""
+sudo: required
+python:
+    - '3.6'
+    - '3.7'
+services:
+    - mysql
+install :
+    - pip install -r requirements.txt
+script:
+    - python simulation.py test
