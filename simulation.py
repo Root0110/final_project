@@ -151,7 +151,7 @@ def fortune_new(year_i_wealth):
     return fortune_i
 
 
-def graph1(fortune_t,start,end,length,work_harder_game,work_harder_list):
+def graph(fortune_t,start,end,length,work_harder_game,work_harder_list):
     ''' Plot fortune values for each person each year
     :param fortune_t: the dataframe contains all year's net fortune values
     :param start: start year of plotting
@@ -201,7 +201,7 @@ if __name__ == '__main__':
 
     # change directory to save graph images under different situations
     os.chdir('/Users/W/PycharmProjects/final_project/Graph')
-    graph1(result1,0,46,1,False,work_harder_list)
+    graph(result1,0,46,1,False,work_harder_list)
 
     # store and analyze the final round of simulation results
     ranking1 = pd.DataFrame({'ID':result1.iloc[0],'Fortune':result1.iloc[46]}).sort_values(
@@ -212,7 +212,6 @@ if __name__ == '__main__':
     ranking1 = ranking1.merge(temp_df,how='outer',on='ID')  # add initial fortune of each person to make comparisons
     ranking1['Increased_by'] = ranking1['Fortune']/ranking1['Initial_fortune'] - 1
     ranking1['Increased_by'] = ranking1['Increased_by'].apply(lambda x: format(x, '.2%'))
-
 
 
 
