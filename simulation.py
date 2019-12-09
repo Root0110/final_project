@@ -151,7 +151,7 @@ def simulation(fortune_df,year_i,pre_year_income,flat,work_harder_game,work_hard
 
 
 def fortune_new(year_i_wealth):
-   """
+    """
     Given the wealth dataframe of one year, calculate the net wealth value for each person during this year
     :param year_i_wealth: a dataframe contains several columns that are different aspects of personal wealth
     :return: fortune_i: a series of personal net fortune during this year
