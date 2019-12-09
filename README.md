@@ -23,8 +23,8 @@ Since the amount of money one person gains and loses are random variables, so I 
 ## Project Design 
 1. __"Status Quo"__  
     Initial amount of each person's wealth is 0, but the level everyone's income amounts is randomly generated, consistent with below distributions.  
-    Based on datasets from `Current Population Survey` by `US Census Bureau`, get the basic distribution of personal income amounts.
-    (pic) 
+    Based on datasets from `Current Population Survey` by `US Census Bureau`, get the basic distribution of personal income amounts.  
+    ![](https://github.com/Root0110/final_project/master/income_distribution.png)   
 2. __Run simulations__
 Generate random values for each variable based on certain predefined rules.
 And suppose people start work at __20__ years old, and would retire at __65__ years old. So, the final result would be achieved after __45__ rounds of simulations(45 years).
