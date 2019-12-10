@@ -11,6 +11,12 @@ before_install:
   - pip install codecov
 
 install:
-  - pip install -r package_requirements.txt
+  - numpy
+  - pandas
+  - os
+  - seaborn
+  - matplotlib
+  - math
+  - warnings
 
 script: pytest
