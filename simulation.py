@@ -45,11 +45,17 @@ def initial_wealth(people):
     return year_0_wealth
 
 
-def stable_income_sample(size):
+def stable_income_sample(size: int):
     """
     Combine 3 distributions in piecewise fashion to generate random sample with income values
     :param size: the number of a group of people
     :return: sample: a ndarray of personal income values
+    >>> a = stable_income_sample(10)
+    >>> b = stable_income_sample(10)
+    >>> list(a) == list(b)  # Elements in two arrays are not totally the same
+    False
+    >>> len(stable_income_sample(10)) # Expected output has the same length as the input
+    10
     """
     # the following three percentage numbers are averaged from three real datasets(2016-2018 CPS)
     sample_left = np.zeros(math.ceil(0.287 * size)).astype('Int32')
@@ -60,14 +66,18 @@ def stable_income_sample(size):
     return sample
 
 
-def income_update(pre_income,people_id_list,work_harder_game,work_harder_id):
+def income_update(pre_income, people_id_list, work_harder_game=False, work_harder_id=[]):
     """
     Update each person's income value based on that in last year
     :param pre_income: a series of stable income values in lat year
     :param people_id_list: a list of id of people
     :param work_harder_id: a bool value, if true, there're some people who work harder than the rest
     :param work_harder_game: a bool value, if true, those who work harder would have advantages over others
-    :return: pre_income: an updated column of stable income values
+    :return: pre_income: an updated list of stable income values
+    >>> pre_income = [0,1,5,1,10,2]
+    >>> people_id_list = [1,2,3,4,5,6]
+    >>> new_income = income_update(pre_income, people_id_list, False)
+    >>> for i in new_income:
     """
     if not work_harder_game:
         work_harder_id = []
@@ -85,14 +95,19 @@ def income_update(pre_income,people_id_list,work_harder_game,work_harder_id):
     return pre_income
 
 
-def random_values(sample,percent,amount,name):
+def random_values(sample, percent, amount, name: str):
     """
     Given a group of people as sample, the percent of winning/losing a certain amount of money, get a column of values
     with a certain column name.
     :param sample: a list of ID numbers which represents a group of people
     :param percent: the chance of earning or losing money
     :param amount: the amount of gains or losses
+    :param name: the name for new column in this dataframe
     :return: df: the dataframe that contains money values for each person
+    >>> sample = [1,2,3,4]
+    >>> df = random_values(sample,0.5,10,'test')
+    >>> df['test'].count()  # len(sample) * percent
+    2
     """
     # randomly choose a certain number of people id numbers
     id_choice = list(np.random.choice(sample,math.ceil(percent * len(sample))))
@@ -101,21 +116,21 @@ def random_values(sample,percent,amount,name):
     return df
 
 
-def simulation(fortune_df,year_i,pre_year_income,flat,work_harder_game,work_harder_id):
+def simulation(fortune_df, year_i: int, pre_year_income, flat=False, work_harder_game=False, work_harder_id=None):
     """
     Simulate the gain and loss of personal wealth
     :param fortune_df: the dataframe that contains personal net wealth values during previous years
     :param year_i: an integer that indicates the number of simulation rounds
     :param pre_year_income: present year to be simulated and calculated
     :param flat: a bool value, true means the income tax is flat (same for all income values)
-    :param work_harder_id: a list of people who work harder to get more income increased
     :param work_harder_game: a bool value, if true, those who work harder would have advantages over others
+    :param work_harder_id: a list of people who work harder to get more income increased
     :return: fortune_i: a column of new fortune value after one round of simulation
     """
     people = fortune_df['ID']  # a list of number from 1 to 1000
     year_i_wealth = pd.DataFrame({'ID':people,'pre_year_wealth':fortune_df['year_{}'.format(year_i-1)],
                                  'income_stable':income_update(pre_year_income,people,work_harder_game,work_harder_id)})
-     # the amount of stable income tax
+    # the amount of stable income tax
     if not flat:
         # the below method for evaluating income tax is piecewise
         year_i_wealth['income_tax'] = year_i_wealth['income_stable'].apply(lambda x: 0.1 * x if x <= 9700 else (
@@ -162,7 +177,7 @@ def fortune_new(year_i_wealth):
     return fortune_i
 
 
-def graph(fortune_t,start,end,length,work_harder_game,work_harder_list):
+def graph(fortune_t, start: int, end: int, length, work_harder_game=False, work_harder_list=None):
     """
     Plot fortune values for each person each year.
     :param fortune_t: the dataframe contains all year's net fortune values
@@ -173,7 +188,6 @@ def graph(fortune_t,start,end,length,work_harder_game,work_harder_list):
     :param work_harder_list: a list of people who work harder
     :return:
     """
-
     for n in list(range(start,end,length)):
         # filter by rows
         year_fortune = pd.DataFrame({'ID':fortune_t.iloc[0],'Fortune':fortune_t.iloc[n+1],'color':'gray'}).sort_values(by='ID') # fortune values of all the people during nth year
@@ -192,24 +206,44 @@ def graph(fortune_t,start,end,length,work_harder_game,work_harder_list):
         print('Success in plotting round {}'.format(n))
 
 
-def analyze(final_round_reuslt):
+def analyze(round_result, year):
     """
     Given the final round of simulation results, analyze the data to find interesting rules.
-    :param final_round_reuslt: the dataframe contains the total welath of each person after 45 years
+    :param round_result: the dataframe contains the total wealth of each person after  years
+    :param year:
     :return:
     """
-    ranking = pd.DataFrame({'ID':final_round_reuslt.iloc[0],'Fortune':final_round_reuslt.iloc[46]}).sort_values(
+    ranking = pd.DataFrame({'ID':round_result.iloc[0],'Fortune':round_result.iloc[year+1]}).sort_values(
         by='Fortune',ascending=False).reset_index(drop=True)
     ranking['Percent'] = ranking['Fortune'] / ranking['Fortune'].sum()  # the ratio of one's fortune to the whole fortune
     ranking['Cumulative_sum'] = ranking['Percent'].cumsum()  # the cumulative sum value
-    temp_df = pd.DataFrame({'ID': result1.iloc[0], 'Initial_fortune': result1.iloc[2]})
+    temp_df = pd.DataFrame({'ID': round_result.iloc[0], 'Initial_fortune': round_result.iloc[2]})
     ranking = ranking.merge(temp_df, how='outer', on='ID')  # add initial fortune of each person to make comparisons
     ranking['Increased_by'] = ranking['Fortune'] / ranking['Initial_fortune'] - 1
     # ranking['Increased_by'] = ranking['Increased_by'].apply(lambda x: format(x, '.2%'))
+    # the number of people who have less wealth than 45 years ago
+    m = ranking[ranking['Increased_by'] < 0]['ID'].count()
+    n = ranking.loc[99]  # the amounts of wealth top 10% people would obtain
+    q = ranking.loc[199][3]  # the accumulative sum of wealth percentage that the 200th person owns
+    return q
 
-    print(ranking[ranking['Increased_by'] < 0]['ID'].count())  # print the number of people who have less wealth than 45 years ago
-    print(ranking.loc[99])  # print the amounts of wealth top 10% people would obtain
-    print(ranking.loc[199])  # print the amounts of wealth top 20% people would obtain
+
+def wealth_difference(acc_list):
+    """
+    Given the list
+    :param acc_list:
+    :return:
+    """
+    with open('Wealth_difference_years.txt','w') as f:
+        print(acc_list,file=f)
+    x = list(range(1,46))
+    y = acc_list
+    plt.figure()
+    plt.plot(x,y)
+    plt.xlabel('Year')
+    plt.ylabel('Accumulative sum of wealth shares of the 200th person')
+    plt.savefig('wealth_difference_tendency.png')
+
 
 
 if __name__ == '__main__':
@@ -226,18 +260,23 @@ if __name__ == '__main__':
     pre_year_income = initial_wealth(person_n)['income_stable']
     year_i_wealth = simulation(fortune,1,pre_year_income,False,False,work_harder_id)
     fortune['year_1'] = fortune_new(year_i_wealth)
+    acc_list = [analyze(fortune.T,1)]  # accumulative sum of wealth percentage that the 200th person owns
+
     # from 2nd year on, stable income values would increase/decrease a little based on initial income levels
     for year in range(2,46):
         pre_year_income = year_i_wealth['income_stable']
         year_i_wealth = simulation(fortune,year,pre_year_income,False,False,work_harder_id)
         fortune['year_{}'.format(year)] = fortune_new(year_i_wealth)
-    print(max(fortune['year_10']),min(fortune['year_10']))
-    result1 = fortune.T
+        acc_list.append(analyze(fortune.T,year))  # append wealth shares that top 20% people would obtain during years
 
+    # plot the tendency
+    wealth_difference(acc_list)
     # change directory to save graph images under different situations
     os.chdir('/Users/W/PycharmProjects/final_project/Graph')
-    graph(result1,0,46,1,False,work_harder_list)
-
+    # plot the final round of simulation results
+    graph(fortune.T,0,46,1,False,work_harder_list)
     # store and analyze the final round of simulation results
-    analyze(result1)
+    analyze(fortune.T)
+
+
 
