@@ -189,10 +189,11 @@ def graph(fortune_t, start: int, end: int, length, work_harder_game=False, work_
     :return:
     """
     for n in list(range(start,end,length)):
-        # filter by rows
-        year_fortune = pd.DataFrame({'ID':fortune_t.iloc[0],'Fortune':fortune_t.iloc[n+1],'color':'gray'}).sort_values(by='ID') # fortune values of all the people during nth year
+        # fortune values of all the people during nth year
+        year_fortune = pd.DataFrame({'ID':fortune_t.iloc[0],'Fortune':fortune_t.iloc[n+1],'color':'gray'}).sort_values(by='ID')
         if work_harder_game:
-            year_fortune['color'].iloc[list(work_harder_list)] = 'red'  # change the color of bars to make the graph more intuitive
+            # change the color of bars to make the graph more intuitive
+            year_fortune['color'].iloc[list(work_harder_list)] = 'red'
         year_fortune.sort_values(by='Fortune',inplace=True,ascending=True)  # sort by people's total fortune values
         year_fortune.reset_index(drop=True,inplace=True)
         plt.figure(figsize=(10,6))
@@ -230,8 +231,8 @@ def analyze(round_result, year):
 
 def wealth_difference(acc_list):
     """
-    Given the list
-    :param acc_list:
+    Given the list of accumulative sum of wealth shares, save the data in each year, and plot the tendency.
+    :param acc_list: a list of wealth shares that top 20% people would obtain during years
     :return:
     """
     with open('Wealth_difference_years.txt','w') as f:
