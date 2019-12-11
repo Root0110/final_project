@@ -49,8 +49,6 @@ I made some changes on some of above factors, to run models representing differe
 | B | ±5% | 1/50,$1000 | $2400 | piecewise | 1/5, -$5000 |
 | C | +15% -5% | 1/1000,$1000 | $2400 | piecewise | 1/50, -$5000 |
 
-## Future work
-
 
 ### Reference & Data Source
 >https://www.census.gov/cps/data/cpstablecreator.html  
