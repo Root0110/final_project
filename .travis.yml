@@ -1,9 +1,11 @@
 # Travis CI configuration
 language: python
-sudo: required
-python:
-    - '3.6'
-    - '3.7'
+
+matrix:
+  include:
+    - python: 3.6
+    - python: 3.7
+
 before_install:
   - python --version
   - pip install -U pip
@@ -11,6 +13,7 @@ before_install:
   - pip install codecov
 
 install:
+  - pip install -r package_requirements.txt
   - numpy
   - pandas
   - os
@@ -18,5 +21,6 @@ install:
   - matplotlib
   - math
   - warnings
+  - tabulate
 
-script: pytest
+script: pytest --doctest-modules MCSimulation.py
