@@ -80,7 +80,6 @@ def income_update(pre_income, people_id_list, work_harder_game=False, work_harde
     >>> pre_income = [0,1,5,1,10,2]
     >>> people_id_list = [1,2,3,4,5,6]
     >>> new_income = income_update(pre_income, people_id_list, False)
-    >>> for i in new_income:
     """
     if not work_harder_game:
         work_harder_id = []
