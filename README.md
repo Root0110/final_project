@@ -14,11 +14,12 @@ Since the amount of money one person gains and loses are random variables, so I 
 `Monte Carlo simulation` involves running many scenarios with different random inputs and summarizing the distribution of the results from potential result.
 
 ## Hypothesis
-* A small portion of people would have the most of wealth within the whole society, just as Pareto Principle states. 
-* As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater and greater.    
-* If the piecewise income tax rate changes to flat tax, the difference would be greater.
-* Living in situations that would cause much more accidental loss, but with more chance for unstable income, the difference would be greater. 
-* People who work harder, even achieved a little more than others, they would have more wealth amounts as long as they persist year by year.
+1. A small portion of people would have the most of wealth within the whole society, just as Pareto Principle states. 
+2.    
+    1. As time goes by, the difference between top 20% wealthy people's wealth and the rest 80% would be greater.  
+    2. If the piecewise income tax rate changes to flat tax, the difference would be greater.    
+    3. Living in situations that would cause much more accidental loss, but with more chance for unstable income, the difference would be greater.    
+3. People who work harder, even achieved a little more than others, they would have more wealth amounts as long as they persist year by year.
 
 ## Project Design 
 1. __"Status Quo"__  
@@ -47,8 +48,6 @@ I made some changes on some of above factors, to run models representing differe
 | A | ±5% | 1/1000,$1000 | $2400 | flat(35%) | 1/50,-$5000 |
 | B | ±5% | 1/50,$1000 | $2400 | piecewise | 1/5, -$5000 |
 | C | +15% -5% | 1/1000,$1000 | $2400 | piecewise | 1/50, -$5000 |
-
-## Future work
 
 
 ### Reference & Data Source
