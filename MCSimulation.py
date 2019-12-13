@@ -25,7 +25,7 @@ def plot_dist(filename):
     """
     os.chdir('/Users/W/PycharmProjects/final_project/Datasets')
     # dataset of personal income from the Current Population Survey(CPS) by US Census Bureau
-    dataset = pd.read_table('personal_income_2018')
+    dataset = pd.read_table(filename)
     # explore the distribution of real data
     n = dataset.count()
     income_points = []
@@ -33,6 +33,7 @@ def plot_dist(filename):
         income = [dataset.iloc[i,0]]*dataset.iloc[i,1]
         income_points += income
     # try to plot and fit data to certain distribution
+    os.chdir('/Users/W/PycharmProjects/final_project')
     with open('Income_distribution.png', 'w') as f1:
         print(sns.distplot(income_points), file=f1)
     return
@@ -192,6 +193,8 @@ def graph(fortune_t, start: int, end: int, length, work_harder_game=False, work_
     :param work_harder_list: a list of people who work harder
     :return:
     """
+    # change directory to save graph images under different situations
+    os.chdir('/Users/W/PycharmProjects/final_project/Graph')
     for n in list(range(start,end,length)):
         # fortune values of all the people during nth year
         year_fortune = pd.DataFrame({'ID':fortune_t.iloc[0],'Fortune':fortune_t.iloc[n+1],'color':'gray'}).sort_values(by='ID')
@@ -215,8 +218,8 @@ def analyze(round_result, year):
     """
     Given the final round of simulation results, analyze the data to find interesting rules.
     :param round_result: the dataframe contains the total wealth of each person after  years
-    :param year:
-    :return:
+    :param year: the number of rounds of simulation
+    :return: ranking: the dataframe containing analysis data
     """
     ranking = pd.DataFrame({'ID':round_result.iloc[0],'Fortune':round_result.iloc[year+1]}).sort_values(
         by='Fortune',ascending=False).reset_index(drop=True)
@@ -230,7 +233,7 @@ def analyze(round_result, year):
     m = ranking[ranking['Increased_by'] < 0]['ID'].count()
     n = ranking.loc[99]  # the amounts of wealth top 10% people would obtain
     q = ranking.loc[199][3]  # the accumulative sum of wealth percentage that the 200th person owns
-    return q
+    return ranking
 
 
 def wealth_difference(acc_list):
@@ -239,8 +242,10 @@ def wealth_difference(acc_list):
     :param acc_list: a list of wealth shares that top 20% people would obtain during years
     :return:
     """
+    os.chdir('/Users/W/PycharmProjects/final_project')
     with open('Wealth_difference_years.txt','w') as f2:
-        print(acc_list,file=f2)
+        for item in acc_list:
+            f2.write('{}\n'.format(item))
     x = list(range(1,46))
     y = acc_list
     plt.figure()
@@ -248,7 +253,6 @@ def wealth_difference(acc_list):
     plt.xlabel('Year')
     plt.ylabel('Accumulative sum of wealth shares of the 200th person')
     plt.savefig('wealth_difference_tendency.png')
-
 
 
 if __name__ == '__main__':
@@ -265,27 +269,30 @@ if __name__ == '__main__':
     pre_year_income = initial_wealth(person_n)['income_stable']
     year_i_wealth = simulation(fortune,1,pre_year_income,False,False,work_harder_id)
     fortune['year_1'] = fortune_new(year_i_wealth)
-    acc_list = [analyze(fortune.T,1)]  # accumulative sum of wealth percentage that the 200th person owns
+    ranking_1 = analyze(fortune.T,1)
+    acc_list = [ranking_1.loc[199][3]]  # accumulative sum of wealth percentage that the 200th person owns
 
     # from 2nd year on, stable income values would increase/decrease a little based on initial income levels
     for year in range(2,46):
         pre_year_income = year_i_wealth['income_stable']
         year_i_wealth = simulation(fortune,year,pre_year_income,False,False,work_harder_id)
         fortune['year_{}'.format(year)] = fortune_new(year_i_wealth)
-        #ranking = analyze(fortune.T,year)
-        acc_list.append(analyze(fortune.T,year))  # append wealth shares that top 20% people would obtain during years
+        ranking = analyze(fortune.T,year)
+        acc_list.append(ranking.loc[199][3])  # append wealth shares that top 20% people would obtain during years
 
     # plot the tendency
     wealth_difference(acc_list)
 
-    # change directory to save graph images under different situations
-    #os.chdir('/Users/W/PycharmProjects/final_project/Graph')
     # plot the final round of simulation results
-    #graph(fortune.T,0,46,1,False,work_harder_list)
+    graph(fortune.T,0,46,1,False,work_harder_list)
 
     # analyze and store the final round of simulation results
-    #with open('Final_round_ranking.txt', 'w') as f3:
-        #print(tabulate(ranking, headers='keys', tablefmt='psql'), file=f3)
+    os.chdir('/Users/W/PycharmProjects/final_project')
+    with open('Final_round_ranking.txt', 'w') as f3:
+        print(tabulate(ranking, headers='keys', tablefmt='psql'), file=f3)
 
+
+    # Bool values in simulation() can be turned on for different situations (basic, flat income tax, work harder game).
+    # In the third situation, we need to manually change the probability and money amounts in simulation().
 
 
