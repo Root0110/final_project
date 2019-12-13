@@ -33,10 +33,8 @@ def plot_dist(filename):
         income = [dataset.iloc[i,0]]*dataset.iloc[i,1]
         income_points += income
     # try to plot and fit data to certain distribution
-    os.chdir('/Users/W/PycharmProjects/final_project')
-    with open('Income_distribution.png', 'w') as f1:
-        print(sns.distplot(income_points), file=f1)
-    return
+    sns_plot = sns.distplot(income_points)
+    sns_plot.figure.savefig('Income_distribution.png')
 
 
 def initial_wealth(people):
@@ -294,5 +292,4 @@ if __name__ == '__main__':
 
     # Bool values in simulation() can be turned on for different situations (basic, flat income tax, work harder game).
     # In the third situation, we need to manually change the probability and money amounts in simulation().
-
 
